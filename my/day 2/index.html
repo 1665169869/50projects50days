@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div class="container" id="app">
+      <div class="progress-container">
+        <div
+          class="progress"
+          id="progress"
+          :style="{width: progressWidth + 'px'}"
+        ></div>
+        <template v-for="(item, index) of circles">
+          <div class="circle" :class="{active: item.active}">{{ item.id }}</div>
+        </template>
+      </div>
+
+      <button class="btn" id="prev" :disabled="prev" @click="btnPrev">
+        Prev
+      </button>
+      <button class="btn" id="next" :disabled="next" @click="btnNext">
+        Next
+      </button>
+    </div>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            progressWidth: 0,
+            circles: [
+              { id: 1, active: true },
+              { id: 2, active: false },
+              { id: 3, active: false },
+              { id: 4, active: false },
+            ],
+          };
+        },
+        computed: {
+          prev() {
+            return !this.circles[1].active;
+          },
+          next() {
+            return this.circles[this.circles.length - 1].active;
+          },
+        },
+        methods: {
+          btnPrev() {
+          },
+          btnNext() {
+            const item = this.circles.find((circle) => circle.active == false);
+            item.active = !item.active;
+          },
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>
