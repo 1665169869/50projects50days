@@ -13,10 +13,12 @@
         <div
           class="progress"
           id="progress"
-          :style="{width: progressWidth + 'px'}"
+          :style="{width: ((circleIndex - 1) * 110) + 'px'}"
         ></div>
-        <template v-for="(item, index) of circles">
-          <div class="circle" :class="{active: item.active}">{{ item.id }}</div>
+        <template v-for="(item, index) of circles" :key="item.id">
+          <div class="circle" :class="{active: index < circleIndex }">
+            {{ item.id }}
+          </div>
         </template>
       </div>
 
@@ -33,6 +35,7 @@
         data() {
           return {
             progressWidth: 0,
+            circleIndex: 1,
             circles: [
               { id: 1, active: true },
               { id: 2, active: false },
@@ -43,18 +46,23 @@
         },
         computed: {
           prev() {
-            return !this.circles[1].active;
+            // return !this.circles[1].active;
+            return this.circleIndex <= 1;
           },
           next() {
-            return this.circles[this.circles.length - 1].active;
+            // return this.circles[this.circles.length - 1].active;
+            return this.circleIndex >= 4;
           },
         },
         methods: {
           btnPrev() {
+            this.circleIndex -= 1;
           },
           btnNext() {
-            const item = this.circles.find((circle) => circle.active == false);
-            item.active = !item.active;
+            // const item = this.circles.find((circle) => circle.active == false);
+            // item.active = !item.active;
+
+            this.circleIndex += 1;
           },
         },
       });
